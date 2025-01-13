@@ -55,7 +55,10 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		  backgroundImage: {
+			'hero-background' : "url('@/assets/background.jpg')"
+		  }
   	}
   },
   plugins: [require("tailwindcss-animate")],

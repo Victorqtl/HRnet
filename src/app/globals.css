@@ -63,12 +63,15 @@
 }
 
 @layer base {
-	* {
-		@apply border-border;
-	}
 	body {
-		@apply bg-background text-foreground;
 		color: #011f46;
 		font-family: "Noto Sans", serif;
 	}
 }
+
+.bg-hero-background {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+  }

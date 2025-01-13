@@ -11,14 +11,18 @@ import { Input } from '@/components/ui/input';
 import { DatePicker } from './ui/datePicker';
 
 const formSchema = z.object({
-	firstName: z.string().min(2, { message: '2 Characters Minimum' }).max(50),
-	lastName: z.string().min(2, { message: '2 Characters Minimum' }).max(50),
+	firstName: z.string().min(2, { message: '2 Characters Minimum' }).max(50, { message: 'Incorrect First Name' }),
+	lastName: z.string().min(2, { message: '2 Characters Minimum' }).max(50, { message: 'Incorrect Last Name' }),
 	birthDate: z.string().min(1, { message: 'Incorrect Date' }),
 	startDate: z.string().min(1, { message: 'Incorrect Date' }),
 	street: z.string().min(5, { message: 'Incorrect Street' }),
 	city: z.string().min(5, { message: 'Incorrect City' }),
 	state: z.string().min(1, { message: 'Incorrect State' }),
-	zipCode: z.string().min(5, { message: 'Incorrect Zip Code' }).max(5),
+	zipCode: z
+		.string()
+		.regex(/^\d+$/, { message: 'Incorrect Zip Code' })
+		.min(5, { message: 'Incorrect Zip Code' })
+		.max(5, { message: 'Incorrect Zip Code' }),
 	department: z.string().min(1, { message: 'Incorrect Department' }),
 });
 
@@ -39,7 +43,6 @@ export default function EmployeeForm() {
 	});
 
 	const {
-		register,
 		handleSubmit,
 		formState: { errors },
 	} = form;
@@ -51,7 +54,7 @@ export default function EmployeeForm() {
 		<Form {...form}>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className='flex flex-col mx-auto gap-4 w-[350px]'>
+				className='flex flex-col mx-auto gap-4 w-[300px] sm:w-[350px]'>
 				<p className='-mb-2'>Employee :</p>
 				<div className='flex gap-2'>
 					<FormField
@@ -93,7 +96,7 @@ export default function EmployeeForm() {
 						<FormItem className='flex flex-col'>
 							<FormControl>
 								<DatePicker
-									variant='startDate'
+									variant='birthDate'
 									value={field.value}
 									onChange={dateString => {
 										field.onChange(dateString);

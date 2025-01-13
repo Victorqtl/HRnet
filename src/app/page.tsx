@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from 'react-day-picker';
 import EmployeeForm from '@/components/employeeForm';
 
 export default function Page() {
@@ -11,7 +10,7 @@ export default function Page() {
 				<h1 className='text-6xl font-semibold text-[#011f46]'>HRnet</h1>
 				<h2 className='text-xl font-medium'>Create Employee :</h2>
 			</div>
-			<div className='flex flex-col items-center gap-4 w-fit mx-auto p-4 lg:p-8 border border-[#011f46] rounded-2xl shadow-lg'>
+			<div className='flex flex-col items-center gap-4 w-fit mx-auto p-6 sm:p-8 border border-[#011f46] rounded-2xl shadow-lg bg-white'>
 				<EmployeeForm />
 				<Link
 					href='/employees'
