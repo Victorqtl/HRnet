@@ -3,6 +3,8 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useDispatch } from 'react-redux';
+import { setFormData } from '@/redux/features/employeeFormSlice';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -27,6 +29,8 @@ const formSchema = z.object({
 });
 
 export default function EmployeeForm() {
+	const dispatch = useDispatch();
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -48,6 +52,7 @@ export default function EmployeeForm() {
 	} = form;
 
 	const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = data => {
+		dispatch(setFormData(data));
 		console.log(data);
 	};
 	return (

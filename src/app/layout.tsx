@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import Providers from '@/redux/providers';
 
 export const metadata: Metadata = {
 	title: 'HRnet',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className='bg-hero-background'>{children}</body>
+			<body className='bg-hero-background'>
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	);
 }
