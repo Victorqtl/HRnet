@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Providers from '@/redux/providers';
+import { FormDataProvider } from '@/context/FormDataContext';
 
 export const metadata: Metadata = {
 	title: 'HRnet',
@@ -15,7 +15,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className='bg-hero-background'>
-				<Providers>{children}</Providers>
+				<FormDataProvider>{children}</FormDataProvider>
 			</body>
 		</html>
 	);

@@ -3,34 +3,34 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useDispatch } from 'react-redux';
-import { setFormData } from '@/redux/features/employeeFormSlice';
+import { useFormDataContext } from '@/context/FormDataContext';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { DatePicker } from './ui/datePicker';
+import ValidationModal from './validationModal';
+import { useState } from 'react';
 
 const formSchema = z.object({
-	firstName: z.string().min(2, { message: '2 Characters Minimum' }).max(50, { message: 'Incorrect First Name' }),
-	lastName: z.string().min(2, { message: '2 Characters Minimum' }).max(50, { message: 'Incorrect Last Name' }),
-	birthDate: z.string().min(1, { message: 'Incorrect Date' }),
-	startDate: z.string().min(1, { message: 'Incorrect Date' }),
-	street: z.string().min(5, { message: 'Incorrect Street' }),
-	city: z.string().min(5, { message: 'Incorrect City' }),
-	state: z.string().min(1, { message: 'Incorrect State' }),
+	firstName: z.string().min(2, { message: '2 Characters Minimum' }).max(50, { message: 'Invalid First Name' }),
+	lastName: z.string().min(2, { message: '2 Characters Minimum' }).max(50, { message: 'Invalid Last Name' }),
+	birthDate: z.string().min(1, { message: 'Invalid Date' }),
+	startDate: z.string().min(1, { message: 'Invalid Date' }),
+	street: z.string().min(5, { message: 'Invalid Street' }),
+	city: z.string().min(5, { message: 'Invalid City' }),
+	state: z.string().min(1, { message: 'Invalid State' }),
 	zipCode: z
 		.string()
-		.regex(/^\d+$/, { message: 'Incorrect Zip Code' })
-		.min(5, { message: 'Incorrect Zip Code' })
-		.max(5, { message: 'Incorrect Zip Code' }),
-	department: z.string().min(1, { message: 'Incorrect Department' }),
+		.regex(/^\d+$/, { message: 'Invalid Zip Code' })
+		.min(5, { message: 'Invalid Zip Code' })
+		.max(5, { message: 'Invalid Zip Code' }),
+	department: z.string().min(1, { message: 'Invalid Department' }),
 });
 
 export default function EmployeeForm() {
-	const dispatch = useDispatch();
-
+	const [showModal, setShowModal] = useState(false);
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -46,200 +46,211 @@ export default function EmployeeForm() {
 		},
 	});
 
+	const { addData } = useFormDataContext();
+
 	const {
 		handleSubmit,
 		formState: { errors },
 	} = form;
 
 	const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = data => {
-		dispatch(setFormData(data));
-		console.log(data);
+		addData(data);
+		setShowModal(true);
+		console.log('Form data submitted:', data);
 	};
 	return (
-		<Form {...form}>
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className='flex flex-col mx-auto gap-4 w-[300px] sm:w-[350px]'>
-				<p className='-mb-2'>Employee :</p>
-				<div className='flex gap-2'>
+		<div>
+			<Form {...form}>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className='flex flex-col mx-auto gap-4 w-[300px] sm:w-[350px]'>
+					<p className='-mb-2'>Employee :</p>
+					<div className='flex gap-2'>
+						<FormField
+							control={form.control}
+							name='firstName'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input
+											placeholder='First Name'
+											{...field}
+										/>
+									</FormControl>
+									{errors.firstName && <FormMessage>{errors.firstName.message}</FormMessage>}
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='lastName'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input
+											placeholder='Last Name'
+											{...field}
+										/>
+									</FormControl>
+									{errors.lastName && <FormMessage>{errors.lastName.message}</FormMessage>}
+								</FormItem>
+							)}
+						/>
+					</div>
 					<FormField
 						control={form.control}
-						name='firstName'
+						name='birthDate'
+						render={({ field }) => (
+							<FormItem className='flex flex-col'>
+								<FormControl>
+									<DatePicker
+										variant='birthDate'
+										value={field.value}
+										onChange={dateString => {
+											const date = new Date(dateString);
+											const formattedDate = date.toLocaleDateString('en-US', {
+												year: 'numeric',
+												month: '2-digit',
+												day: '2-digit',
+											});
+											field.onChange(formattedDate);
+										}}
+									/>
+								</FormControl>
+								{errors.birthDate && <FormMessage>{errors.birthDate.message}</FormMessage>}
+							</FormItem>
+						)}
+					/>
+					<p className='-mb-2'>Adress :</p>
+					<FormField
+						control={form.control}
+						name='street'
 						render={({ field }) => (
 							<FormItem>
 								<FormControl>
 									<Input
-										placeholder='First Name'
+										placeholder='Street'
 										{...field}
 									/>
 								</FormControl>
-								{errors.firstName && <FormMessage>{errors.firstName.message}</FormMessage>}
+								{errors.street && <FormMessage>{errors.street.message}</FormMessage>}
 							</FormItem>
 						)}
 					/>
 					<FormField
 						control={form.control}
-						name='lastName'
+						name='city'
 						render={({ field }) => (
 							<FormItem>
 								<FormControl>
 									<Input
-										placeholder='Last Name'
+										placeholder='City'
 										{...field}
 									/>
 								</FormControl>
-								{errors.lastName && <FormMessage>{errors.lastName.message}</FormMessage>}
+								{errors.city && <FormMessage>{errors.city.message}</FormMessage>}
 							</FormItem>
 						)}
 					/>
-				</div>
-
-				<FormField
-					control={form.control}
-					name='birthDate'
-					render={({ field }) => (
-						<FormItem className='flex flex-col'>
-							<FormControl>
-								<DatePicker
-									variant='birthDate'
-									value={field.value}
-									onChange={dateString => {
-										field.onChange(dateString);
-									}}
-								/>
-							</FormControl>
-							{errors.birthDate && <FormMessage>{errors.birthDate.message}</FormMessage>}
-						</FormItem>
-					)}
-				/>
-
-				<p className='-mb-2'>Adress :</p>
-				<FormField
-					control={form.control}
-					name='street'
-					render={({ field }) => (
-						<FormItem>
-							<FormControl>
-								<Input
-									placeholder='Street'
-									{...field}
-								/>
-							</FormControl>
-							{errors.street && <FormMessage>{errors.street.message}</FormMessage>}
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name='city'
-					render={({ field }) => (
-						<FormItem>
-							<FormControl>
-								<Input
-									placeholder='City'
-									{...field}
-								/>
-							</FormControl>
-							{errors.city && <FormMessage>{errors.city.message}</FormMessage>}
-						</FormItem>
-					)}
-				/>
-
-				<div className='flex gap-2'>
+					<div className='flex gap-2'>
+						<FormField
+							control={form.control}
+							name='state'
+							render={({ field }) => (
+								<FormItem className='w-1/2'>
+									<FormControl>
+										<Select
+											value={field.value}
+											onValueChange={field.onChange}>
+											<SelectTrigger>
+												<SelectValue placeholder='State' />
+											</SelectTrigger>
+											<SelectContent>
+												{states.map(state => (
+													<SelectItem
+														key={state.abbreviation}
+														value={state.name}>
+														{state.name}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</FormControl>
+									{errors.state && <FormMessage>{errors.state.message}</FormMessage>}
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='zipCode'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input
+											placeholder='Zip Code'
+											{...field}
+										/>
+									</FormControl>
+									{errors.zipCode && <FormMessage>{errors.zipCode.message}</FormMessage>}
+								</FormItem>
+							)}
+						/>
+					</div>
+					<p className='-mb-2'>Job : </p>
 					<FormField
 						control={form.control}
-						name='state'
+						name='startDate'
 						render={({ field }) => (
-							<FormItem className='w-1/2'>
+							<FormItem className='flex flex-col'>
+								<FormControl>
+									<DatePicker
+										variant='startDate'
+										value={field.value}
+										onChange={dateString => {
+											const date = new Date(dateString);
+											const formattedDate = date.toLocaleDateString('en-US', {
+												year: 'numeric',
+												month: '2-digit',
+												day: '2-digit',
+											});
+											field.onChange(formattedDate);
+										}}
+									/>
+								</FormControl>
+								{errors.startDate && <FormMessage>{errors.startDate.message}</FormMessage>}
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='department'
+						render={({ field }) => (
+							<FormItem>
 								<FormControl>
 									<Select
 										value={field.value}
 										onValueChange={field.onChange}>
 										<SelectTrigger>
-											<SelectValue placeholder='State' />
+											<SelectValue placeholder='Department' />
 										</SelectTrigger>
 										<SelectContent>
-											{states.map(state => (
-												<SelectItem
-													key={state.abbreviation}
-													value={state.name}>
-													{state.name}
-												</SelectItem>
-											))}
+											<SelectItem value='Sales'>Sales</SelectItem>
+											<SelectItem value='Marketing'>Marketing</SelectItem>
+											<SelectItem value='Engineering'>Engineering</SelectItem>
+											<SelectItem value='Human Resources'>Human Resources</SelectItem>
+											<SelectItem value='Legal'>Legal</SelectItem>
 										</SelectContent>
 									</Select>
 								</FormControl>
-								{errors.state && <FormMessage>{errors.state.message}</FormMessage>}
+								{errors.department && <FormMessage>{errors.department.message}</FormMessage>}
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name='zipCode'
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<Input
-										placeholder='Zip Code'
-										{...field}
-									/>
-								</FormControl>
-								{errors.zipCode && <FormMessage>{errors.zipCode.message}</FormMessage>}
-							</FormItem>
-						)}
-					/>
-				</div>
-
-				<p className='-mb-2'>Job : </p>
-				<FormField
-					control={form.control}
-					name='startDate'
-					render={({ field }) => (
-						<FormItem className='flex flex-col'>
-							<FormControl>
-								<DatePicker
-									variant='startDate'
-									value={field.value}
-									onChange={dateString => {
-										field.onChange(dateString);
-									}}
-								/>
-							</FormControl>
-							{errors.startDate && <FormMessage>{errors.startDate.message}</FormMessage>}
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name='department'
-					render={({ field }) => (
-						<FormItem>
-							<FormControl>
-								<Select
-									value={field.value}
-									onValueChange={field.onChange}>
-									<SelectTrigger>
-										<SelectValue placeholder='Department' />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value='Sales'>Sales</SelectItem>
-										<SelectItem value='Marketing'>Marketing</SelectItem>
-										<SelectItem value='Engineering'>Engineering</SelectItem>
-										<SelectItem value='Human Resources'>Human Resources</SelectItem>
-										<SelectItem value='Legal'>Legal</SelectItem>
-									</SelectContent>
-								</Select>
-							</FormControl>
-							{errors.department && <FormMessage>{errors.department.message}</FormMessage>}
-						</FormItem>
-					)}
-				/>
-
-				<Button type='submit'>Submit</Button>
-			</form>
-		</Form>
+					<Button type='submit'>Submit</Button>
+				</form>
+			</Form>
+			{showModal ? <ValidationModal /> : null}
+		</div>
 	);
 }
 
