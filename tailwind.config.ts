@@ -58,7 +58,7 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
 		  backgroundImage: {
-			'hero-background' : "url('@/assets/background.jpg')"
+			'hero-background' : "url('/background.jpg')"
 		  }
   	}
   },

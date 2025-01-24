@@ -46,7 +46,7 @@ export default function EmployeeForm() {
 		},
 	});
 
-	const { addData } = useFormDataContext();
+	const { addData } = useFormDataContext()!;
 
 	const {
 		handleSubmit,
