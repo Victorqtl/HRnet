@@ -5,8 +5,7 @@ import { useFormDataContext } from '@/context/FormDataContext';
 import Link from 'next/link';
 
 export default function Employees() {
-	const { data } = useFormDataContext();
-	console.log('data:', data);
+	const { data } = useFormDataContext()!;
 	return (
 		<main>
 			<div className='flex flex-col items-center gap-4 mt-4 mb-4'>

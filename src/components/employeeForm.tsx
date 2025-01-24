@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useFormDataContext } from '@/context/FormDataContext';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
@@ -11,7 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { DatePicker } from './ui/datePicker';
 import ValidationModal from './validationModal';
-import { useState } from 'react';
 
 const formSchema = z.object({
 	firstName: z.string().min(2, { message: '2 Characters Minimum' }).max(50, { message: 'Invalid First Name' }),
@@ -56,7 +56,6 @@ export default function EmployeeForm() {
 	const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = data => {
 		addData(data);
 		setShowModal(true);
-		console.log('Form data submitted:', data);
 	};
 	return (
 		<div>

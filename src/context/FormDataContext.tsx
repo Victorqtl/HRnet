@@ -53,8 +53,5 @@ export const FormDataProvider = ({ children }: { children: ReactNode }) => {
 
 export const useFormDataContext = () => {
 	const context = useContext(FormDataContext);
-	if (!context) {
-		throw new Error('useFormDataContext must be used within a FormDataProvider');
-	}
 	return context;
 };
