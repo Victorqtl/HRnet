@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { FormDataProvider } from '@/context/FormDataContext';
+import { EmployeeProvider } from '@/context/EmployeeContext';
 
 export const metadata: Metadata = {
 	title: 'HRnet',
@@ -15,7 +15,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className='bg-hero-background'>
-				<FormDataProvider>{children}</FormDataProvider>
+				<EmployeeProvider>{children}</EmployeeProvider>
 			</body>
 		</html>
 	);

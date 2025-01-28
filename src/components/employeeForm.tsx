@@ -3,7 +3,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useFormDataContext } from '@/context/FormDataContext';
+import { useEmployeeContext } from '@/context/EmployeeContext';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -46,15 +46,15 @@ export default function EmployeeForm() {
 		},
 	});
 
-	const { addData } = useFormDataContext()!;
+	const { addEmployee } = useEmployeeContext();
 
 	const {
 		handleSubmit,
 		formState: { errors },
 	} = form;
 
-	const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = data => {
-		addData(data);
+	const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = employee => {
+		addEmployee(employee);
 		setShowModal(true);
 	};
 	return (
