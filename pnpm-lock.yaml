@@ -48,8 +48,8 @@ importers:
         specifier: ^0.469.0
         version: 0.469.0(react@19.0.0)
       my-hrnet-data-table:
-        specifier: ^1.0.7
-        version: 1.0.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^1.0.12
+        version: 1.0.12(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next:
         specifier: 15.1.2
         version: 15.1.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1084,8 +1084,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  my-hrnet-data-table@1.0.7:
-    resolution: {integrity: sha512-HvVc2xFhOJ/EI+t7jsjztu2FXniDhSj9s/Ibjkm+10eW5/xKfuM7R4R+yMbFsaq02X518vfT6bZu/KTPrtbJlA==}
+  my-hrnet-data-table@1.0.12:
+    resolution: {integrity: sha512-6F8Sm7xct1jNvxRZj81wDTb3PVwypj9XPb6iJIdpogHhfnx7f4H98A2IReMYII1UxTSeUMgpGZ71w1BBXJsDeg==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -2468,7 +2468,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  my-hrnet-data-table@1.0.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  my-hrnet-data-table@1.0.12(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       lucide-react: 0.471.2(react@19.0.0)
       react: 19.0.0

@@ -5,8 +5,9 @@ import { Employee } from '@/types/employee';
 
 type EmployeeContextType = {
 	employees: Employee[];
-	addEmployee: (employee: Employee) => Promise<void>;
 	fetchEmployees: () => Promise<void>;
+	addEmployee: (employee: Employee) => Promise<void>;
+	deleteEmployee: (id: string) => Promise<void>;
 	isLoading: boolean;
 };
 
@@ -52,12 +53,28 @@ export const EmployeeProvider: React.FC<{ children: ReactNode }> = ({ children }
 		}
 	};
 
+	const deleteEmployee = async (id: string) => {
+		try {
+			const response = await fetch(`http://localhost:3000/employees/${id}`, {
+				method: 'DELETE',
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to delete employee');
+			}
+
+			await fetchEmployees();
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+
 	useEffect(() => {
 		fetchEmployees();
 	}, [fetchEmployees]);
 
 	return (
-		<EmployeeContext.Provider value={{ employees, addEmployee, fetchEmployees, isLoading }}>
+		<EmployeeContext.Provider value={{ employees, addEmployee, fetchEmployees, deleteEmployee, isLoading }}>
 			{children}
 		</EmployeeContext.Provider>
 	);

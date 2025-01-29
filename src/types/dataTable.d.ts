@@ -1,10 +1,10 @@
-import { Employee } from './employee';
-
 declare module 'my-hrnet-data-table' {
+  import { Employee } from './employee';
   
-    interface DataTableProps {
-      data: Employee[];
-    }
-  
-    export const DataTable: FC<DataTableProps>;
+  type DataTableProps = {
+    data: Employee[];
+    deleteEmployee: (id: string) => Promise<void>;
   }
+
+  const DataTable: React.FC<DataTableProps>;
+}
