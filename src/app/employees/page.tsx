@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function Employees() {
-	const { employees, isLoading, deleteEmployee } = useEmployeeContext();
+	const { employees, isLoading, editEmployee, deleteEmployee } = useEmployeeContext();
 	const [progress, setProgress] = useState(0);
 
 	useEffect(() => {
@@ -48,6 +48,7 @@ export default function Employees() {
 			<div className='flex flex-col items-center gap-4'>
 				<DataTable
 					data={employees}
+					editEmployee={editEmployee}
 					deleteEmployee={deleteEmployee}
 				/>
 				<Link

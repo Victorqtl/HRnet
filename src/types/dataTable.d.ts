@@ -3,8 +3,9 @@ declare module 'my-hrnet-data-table' {
   
   type DataTableProps = {
     data: Employee[];
+    editEmployee: (id: string, updateEmployee: Employee) => Promise<void>;
     deleteEmployee: (id: string) => Promise<void>;
   }
 
-  const DataTable: React.FC<DataTableProps>;
+  const DataTable: React.FC<DataTableProps>
 }

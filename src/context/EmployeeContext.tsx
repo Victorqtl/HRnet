@@ -7,6 +7,7 @@ type EmployeeContextType = {
 	employees: Employee[];
 	fetchEmployees: () => Promise<void>;
 	addEmployee: (employee: Employee) => Promise<void>;
+	editEmployee: (id: string, updateEmployee: Employee) => Promise<void>;
 	deleteEmployee: (id: string) => Promise<void>;
 	isLoading: boolean;
 };
@@ -53,6 +54,25 @@ export const EmployeeProvider: React.FC<{ children: ReactNode }> = ({ children }
 		}
 	};
 
+	const editEmployee = async (id: string, updateEmployee: Employee) => {
+		try {
+			const response = await fetch(`http://localhost:3000/employees/${id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(updateEmployee),
+			});
+			if (!response.ok) {
+				throw new Error('Failed to edit employee');
+			}
+
+			await fetchEmployees();
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+
 	const deleteEmployee = async (id: string) => {
 		try {
 			const response = await fetch(`http://localhost:3000/employees/${id}`, {
@@ -74,7 +94,8 @@ export const EmployeeProvider: React.FC<{ children: ReactNode }> = ({ children }
 	}, [fetchEmployees]);
 
 	return (
-		<EmployeeContext.Provider value={{ employees, addEmployee, fetchEmployees, deleteEmployee, isLoading }}>
+		<EmployeeContext.Provider
+			value={{ employees, addEmployee, fetchEmployees, editEmployee, deleteEmployee, isLoading }}>
 			{children}
 		</EmployeeContext.Provider>
 	);
