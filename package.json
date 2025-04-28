@@ -23,7 +23,7 @@
     "date-fns": "^2.28.0",
     "lucide-react": "^0.469.0",
     "my-hrnet-data-table": "^1.0.15",
-    "next": "15.1.2",
+    "next": "15.2.3",
     "pg": "^8.13.1",
     "react": "^19.0.0",
     "react-day-picker": "8.10.1",
